@@ -1,10 +1,4 @@
-╭─plain@vm03 ~
-╰─➤  cat /usr/local/src/nextcloud-docker/docker-compose.yml                                                                                              1 ↵
 version: '2'
-
-
-
-
 volumes:
  app_nextcloud:
  db_nextcloud:
