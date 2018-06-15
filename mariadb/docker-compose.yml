@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  db:
+          #build: server/docker/mariadb
+    image: mariadb
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: password
+      MYSQL_USER: user1
+      MYSQL_DB: password
+      #entrypoint:
+      #/docker-entrypoint-initdb.d/configure.sh

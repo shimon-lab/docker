@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  db:
+          #build: server/docker/mariadb
+    image: mariadb
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: password
+      MYSQL_USER: user1
+      MYSQL_DB: password
+      #entrypoint:
+      #/docker-entrypoint-initdb.d/configure.sh
+      #
+      #
+  nginx:
+       # build: ./containers/nginx
+       #restart: always
+    image  : nginx
+    ports  :
+        - "80:80"
+    volumes:
+       #- ./public:/usr/share/nginx/html
+        - ./data/html /var/www/html

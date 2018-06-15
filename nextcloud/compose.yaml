@@ -1,63 +1,43 @@
 version: '2'
+
 volumes:
  app_nextcloud:
  db_nextcloud:
-#  db_airsonic:
- app-airsonic:
 
 services:
+ web:
+   image: nginx
+   volumes:
+     - ./data/html:/var/www/html
+   links:
+     - app
+   volumes_from:
+     - app
+   environment:
+     - VIRTUAL_HOST
+   networks:
+   - back
+   - lb_web
+   ports:
+     - 80:80
+     - 443:443
  db_nextcloud:
    image: mariadb
    restart: always
    volumes:
-     - ./db:/var/lib/mysql
+     - ./data/mariadb:/var/lib/mysql
    environment:
-     - MYSQL_ROOT_PASSWORD=+PtH//iGXWJhp6xLlqsgsXP
-     - MYSQL_PASSWORD=x+9AEQOllyPvMimKKgssjnD
      - MYSQL_DATABASE=nextcloud
      - MYSQL_USER=nextcloud
-
+     - MYSQL_ROOT_PASSWORD=admin
+   ports:
+     - "3306:3306"
  app_nextcloud:
    image: nextcloud
    ports:
-     - 8080:80
+     - "8080:80"
    links:
      - db_nextcloud
    volumes:
-     - ./nextcloud:/var/www/html
+     - ./data/nextcloud:/var/www/html
    restart: always
-
-#  db_airsonic:
-#    image: postgres:9.5-alpine
-#    restart: always
-#    volumes:
-##    - ./init.sql:/docker-entrypoint-initdb.d/01_airsonic.sql
-#      - ./db_airsonic:/var/lib/postgresql/data
-#    environment:
-#      - POSTGRES_ROOT_PASSWORD=b+vT9cuCZFr2lvyDewqqLYole9
-#      - POSTGRES_PASSWORD=B0joTs4DkGwqsIqxHHJEQd/OsQ
-#      - POSTGRES_DATABASE=airsonic
-#      - POSTGRES_USER=airsonic
-#    # environment:
-#    #   - MYSQL_ROOT_PASSWORD=b+vT9cuCZFr2lvyDewqqLYole9
-#    #   - MYSQL_PASSWORD=B0joTs4DkGwqsIqxHHJEQd/OsQ
-#    #   - MYSQL_DATABASE=airsonic
-#    #   - MYSQL_USER=airsonic
-
- app-airsonic:
-   image: airsonic/airsonic
-   restart: always
-   ports:
-     - 4040:4040
-#    links:
-#      - db_airsonic
-   volumes:
-     - ./airsonic/music:/airsonic/music:ro
-     - ./airsonic/playlists:/airsonic/playlists
-     - ./airsonic/podcasts:/airsonic/podcasts
-     - ./airsonic/data:/airsonic/data
-   environment:
-     - CONTEXT_PATH=/airsonic
-#      - UID=1000
-#      - GID=1000
-#      CONTEXT_PATH: '/airsonic'

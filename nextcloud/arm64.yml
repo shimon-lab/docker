@@ -1,0 +1,30 @@
+version: '2'
+# this image is for ARM64 NOT AMD64!!!
+services:
+    nextcloud:
+        depends_on:
+            - db
+        build:
+            context: "./nextcloud"
+            args:
+                domain: "shimon.micro.com"
+        extra_hosts:
+            - "your.domain.com:192.168.1.10"
+        ports:
+            - "80:80"
+        environment:
+            MYSQL_USER: root
+            MYSQL_PASSWORD: 7717shimon
+            MYSQL_HOST: db
+            MYSQL_DATABASE: nextcloud
+        volumes:
+            - "/mnt/usbhdd:/var/www/html/data"
+        links:
+            - db
+    db:
+        build: "./maria"
+        environment:
+            MYSQL_ROOT_PASSWORD: 7717shimon
+        volumes:
+            - "./data/maria:/config/databases"
+~
