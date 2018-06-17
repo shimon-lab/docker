@@ -2,25 +2,34 @@ version: '2'
 
 services:
   db:
-          #build: server/docker/mariadb
     image: mariadb
     volumes:
       - ./data/mariadb:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_PASSWORD: password
-      MYSQL_USER: user1
-      MYSQL_DB: password
-      #entrypoint:
-      #/docker-entrypoint-initdb.d/configure.sh
-      #
-      #
+            #MYSQL_USER: root
+            #MYSQL_DB: password
+            #
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+    restart: always
+
   nginx:
-       # build: ./containers/nginx
-       #restart: always
-    image  : nginx
-    ports  :
+    image: nginx
+    ports:
         - "80:80"
     volumes:
        #- ./public:/usr/share/nginx/html
-        - ./data/html /var/www/html
+        - ./data/html:/var/www/html
+    restart: always
+
+  app:
+    image: nextcloud
+    links:
+      - db
+    ports:
+      - "8081:80"
+    volumes:
+      - ./data/nextcloud:/var/www/html
+    restart: always
