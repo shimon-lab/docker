@@ -1,0 +1,47 @@
+ubuntu install
+
+docker インスコ:参考 https://qiita.com/mochizukikotaro/items/ae7ae1461ea4bf495bd0
+
+sudo apt-get install docker
+sudo apt install docker-compose
+
+参考 https://qiita.com/ohhara_shiojiri/items/0ac80924a1a8292ce511
+
+docker-compose.ymlの構築
+docker-compose up -d
+wordpressは再起動必須
+docker ps による動作確認(とくにport関連要注意)
+
+
+docker コマンド:参考 https://blog.kasei-san.com/entry/2018/03/12/060801
+
+ビルド
+  docker-compose build # Build or rebuild services
+起動、停止
+  docker-compose up      # Create and start containers
+  docker-compose up -d   # デーモンとして起動
+
+  docker-compose start   # サービスを開始
+  docker-compose restart # サービスを再起動
+  docker-compose stop    # サービスをstop
+  docker-compose kill    # サービスを強制終了
+コマンド実行
+# 起動中のコンテナでコマンド実行
+  docker-compose exec ${service_name} ${command}
+
+# コンテナを作成してコマンド実行(実行後コンテナを削除
+  docker-compose run --rm ${service_name} ${command}
+削除
+  # Stop and remove containers, networks
+  docker-compose down
+
+# imageも削除
+  docker-compose down --rmi all
+
+# 名前付きvolume も削除
+  docker-compose rm  --volumes
+一覧
+  docker-compose images               # image の一覧
+  docker-compose ps                   # 起動しているコンテナの一覧
+  docker-compose top ${service_name}  # サービスで実行中のプロセスの一覧
+  docker-compose logs ${service_name} # View output from containers

@@ -1,0 +1,22 @@
+# docker-compose.yml
+version: "2"
+services:
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - "9000:80"
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: "db:3306"
+    env_file: .env
+
+  db:
+    image: mysql:latest
+    env_file: .env
+    volumes:
+      - db-data:/var/lib/mysql
+
+# database用にストレージの永続化設定
+volumes:
+  db-data:
