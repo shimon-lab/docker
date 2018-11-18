@@ -8,10 +8,22 @@ sudo apt install docker-compose
 参考 https://qiita.com/ohhara_shiojiri/items/0ac80924a1a8292ce511
 
 docker-compose.ymlの構築
-docker-compose up -d
+
+docker-compose up -d #実行時/dockerに入ること
 wordpressは再起動必須
 docker ps による動作確認(とくにport関連要注意)
 
+
+DBコンテナ "docker-id" にdocker execします。
+docker exec -it ~docker-id~ /bin/bash
+
+create database wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+CREATE USER wordpressuser IDENTIFIED BY 'c1o2n3t4r5o6l';
+
+
+
+
+######
 
 docker コマンド:参考 https://blog.kasei-san.com/entry/2018/03/12/060801
 
@@ -45,3 +57,26 @@ docker コマンド:参考 https://blog.kasei-san.com/entry/2018/03/12/060801
   docker-compose ps                   # 起動しているコンテナの一覧
   docker-compose top ${service_name}  # サービスで実行中のプロセスの一覧
   docker-compose logs ${service_name} # View output from containers
+
+
+ポート開放 :参考 https://qiita.com/toujika/items/be21d361cf80d664859c
+sudo ufw status
+sudo ufw enable
+sudo ufw allow ~number~
+
+mysql 関連
+
+mysql -u root
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2 "No such file or directory")
+
+エラーの出てるところにmysql.sock #だめでした
+
+sudo mysql -u root -h 127.0.0.1 -ports wordpress -p
+
+######
+
+よくわからんがnextcloudのcomposeを魔改造してうまく行った.
+wordpress.ymlを読み込むこと
+
+create database wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+CREATE USER wordpressuser IDENTIFIED BY 'c1o2n3t4r5o6l'

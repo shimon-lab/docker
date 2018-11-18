@@ -1,0 +1,51 @@
+version: '2'
+
+services:
+  db:
+    image: mariadb
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: wordpress
+            #MYSQL_USER: root
+            #MYSQL_DB: password
+            #
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+    restart: always
+
+  nginx:
+    image: nginx
+    ports:
+        - "80:80"
+    volumes:
+       #- ./public:/usr/share/nginx/html
+        - ./data/html:/var/www/html
+    restart: always
+
+#  app:
+#    image: nextcloud
+#    links:
+#      - db
+#    ports:
+#      - "8081:80"
+#    volumes:
+#      - ./data/nextcloud:/var/www/html
+#    restart: always
+
+  app:
+    image: wordpress:latest
+    ports:
+      - "8000:80"
+#    volumes:
+#      - ./data/wordpress:
+
+    links:
+      - db
+    restart: always
+#    environment:
+#      WORDPRESS_DB_HOST: db:3306
+#      WORDPRESS_DB_PASSWORD: wordpress
+volumes:
+    db-data:
