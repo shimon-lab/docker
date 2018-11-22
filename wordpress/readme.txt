@@ -36,10 +36,17 @@ root rootで入る（くそいやだ
 容量制限がかかる場合
  php -r "echo phpinfo();" | grep "php.ini"
 
-php.iniの中の
+php.iniの中の編集
 
-post_max_size
-upload_max_filesize
+　post_max_size
+　upload_max_filesize
+
+wordpress直下の .htaccess に以下を追加
+
+　php_value memory_limit 50M
+　php_value post_max_size 40M
+　php_value upload_max_filesize 30M
+
 
 変更
 
